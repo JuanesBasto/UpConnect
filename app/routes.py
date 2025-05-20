@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, url_for, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 from app.db import get_db_connection  # Importa aquí
 
 main = Blueprint('main', __name__)
@@ -25,6 +26,7 @@ def registro():
             return redirect(url_for('main.registro'))
 
         try:
+            contrasena_hash = generate_password_hash(contrasena)
             # Verificar si el correo ya existe
             cur.execute("SELECT * FROM Usuarios WHERE Correo_institucional = ?", (correo,))
             usuario_existente = cur.fetchone()
@@ -40,7 +42,7 @@ def registro():
                     Semestre, Semillero, ID_carrera
                 )
                 VALUES (?, ?, ?, ?, CURDATE(), ?, ?, ?)
-            """, (nombre, apellido, correo, contrasena, semestre, semillero, id_carrera))
+            """, (nombre, apellido, correo, contrasena_hash, semestre, semillero, id_carrera))
 
             
             conn.commit()
@@ -62,23 +64,30 @@ def login():
         contrasena =  request.form.get("contrasena")
 
         conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM Usuarios WHERE Correo_institucional = ? AND Contrasena = ?", (correo,contrasena))
+        cur = conn.cursor(dictionary=True)
+        cur.execute("SELECT * FROM Usuarios WHERE Correo_institucional = ? ", (correo,))
         usuario = cur.fetchone()
-        cur.close()
         
-        if usuario:
+        if usuario and check_password_hash(usuario["Contrasena"], contrasena):
             session["usuario"] = correo
-            flash("inicio de sesion exitoso", "succes")
+            flash("inicio de sesion exitoso", "success")
             return redirect(url_for("main.dashboard")) #redirecciona al panel
         else:
             flash("Correo o contraseña incorrectos", "danger")
     return render_template("login.html")
 
+@main.route("/logout")
+def logout():
+    session.clear()
+    flash("Sesión cerrada correctamente", "success")
+    return redirect(url_for("main.login"))
+
+
 @main.route("/dashboard")
 def dashboard():
     if "usuario" in session:
-        return f"Bienvenido, {session['usuario']}!"
+        return render_template("dashboard.html")
     else:
         flash("Debes iniciar sesión primero", "warning")
         return redirect(url_for("main.login"))
+
