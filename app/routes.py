@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, session, url_for, flash
 from app.db import get_db_connection  # Importa aquí
 
 main = Blueprint('main', __name__)
@@ -54,3 +54,31 @@ def registro():
             conn.close()
 
     return render_template('register.html', carreras=carreras)
+
+@main.route('/login', methods =['GET', 'POST'])
+def login():
+    if request.method=='POST':
+        correo = request.form.get("correo")
+        contrasena =  request.form.get("contrasena")
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM Usuarios WHERE Correo_institucional = ? AND Contrasena = ?", (correo,contrasena))
+        usuario = cur.fetchone()
+        cur.close()
+        
+        if usuario:
+            session["usuario"] = correo
+            flash("inicio de sesion exitoso", "succes")
+            return redirect(url_for("main.dashboard")) #redirecciona al panel
+        else:
+            flash("Correo o contraseña incorrectos", "danger")
+    return render_template("login.html")
+
+@main.route("/dashboard")
+def dashboard():
+    if "usuario" in session:
+        return f"Bienvenido, {session['usuario']}!"
+    else:
+        flash("Debes iniciar sesión primero", "warning")
+        return redirect(url_for("main.login"))
