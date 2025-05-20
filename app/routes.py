@@ -25,6 +25,15 @@ def registro():
             return redirect(url_for('main.registro'))
 
         try:
+            # Verificar si el correo ya existe
+            cur.execute("SELECT * FROM Usuarios WHERE Correo_institucional = ?", (correo,))
+            usuario_existente = cur.fetchone()
+
+            if usuario_existente:
+                flash("El correo ya está registrado", "danger")
+                return redirect(url_for("main.registro"))
+
+            # Insertar si no existe
             cur.execute("""
                 INSERT INTO Usuarios (
                     Nombre, Apellido, Correo_institucional, Contrasena, Fecha_registro,
@@ -33,6 +42,7 @@ def registro():
                 VALUES (?, ?, ?, ?, CURDATE(), ?, ?, ?)
             """, (nombre, apellido, correo, contrasena, semestre, semillero, id_carrera))
 
+            
             conn.commit()
             flash("Usuario registrado con éxito", "success")
             return redirect(url_for('main.registro'))
