@@ -3,16 +3,8 @@ from app.db import get_db_connection
 
 profesor_bp = Blueprint('profesor', __name__)
 
-@profesor_bp.route("/dashboard")
-def dashboard():
-    if "user_id" in session:
-        return render_template("dashboard.html")
-    else:
-        flash("Debes iniciar sesión primero", "warning")
-        return redirect(url_for("auth.login"))
-
-@profesor_bp.route('/profesores/<int:id>')
-def profesor_detalle(id):
+@profesor_bp.route('/profesores/<slug>')
+def profesor_detalle(slug):
     if 'user_id' not in session:
         flash("Debes iniciar sesión", "warning")
         return redirect(url_for('auth.login'))
@@ -28,8 +20,8 @@ def profesor_detalle(id):
         SELECT p.ID_profesor, p.Nombre AS nombre_profesor, f.Nombre AS nombre_facultad
         FROM Profesores p
         LEFT JOIN Facultades f ON p.ID_facultad = f.ID_facultad
-        WHERE p.ID_profesor = %s
-    """, (id,))
+        WHERE p.Slug = %s
+    """, (slug,))
     profesor = cur.fetchone()
 
     if not profesor:
@@ -75,3 +67,22 @@ def profesor_detalle(id):
                            promedio=promedio,
                            page=page,
                            total_pages=total_pages)
+    
+@profesor_bp.route('/profesores')
+def listar_profesores():
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+    cur.execute("""
+        SELECT p.ID_profesor, p.Nombre, p.Slug, p.Correo_institucional, f.Nombre AS Facultad,
+            COALESCE(ROUND(AVG(e.Estrellas), 1), 0) AS Promedio
+        FROM Profesores p
+        LEFT JOIN Facultades f ON p.ID_facultad = f.ID_facultad
+        LEFT JOIN Evaluaciones e ON p.ID_profesor = e.ID_profesor
+        GROUP BY p.ID_profesor
+        ORDER BY p.Nombre ASC
+    """)
+    profesores = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('profesores_lista.html', profesores=profesores)
+

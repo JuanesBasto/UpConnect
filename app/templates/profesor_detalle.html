@@ -6,7 +6,8 @@
 <header class="mb-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url_for('profesor.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('profesor.listar_profesores') }}">Consulta Profesores</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ profesor.nombre_profesor }}</li>
         </ol>
     </nav>
