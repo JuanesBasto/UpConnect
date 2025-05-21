@@ -1,8 +1,13 @@
 from flask import Flask
+from flask_session import Session
+from app.routes import register_routes
 
-app = Flask(__name__)
-app.secret_key = 'tu_clave_secreta'
+def create_app():
+    app = Flask(__name__)
+    app.secret_key = "super_secret_key"
+    app.config['SESSION_TYPE'] = 'filesystem'
 
-# Importar blueprint aquí para evitar problema de importación circular
-from app.routes import main
-app.register_blueprint(main)
+    Session(app)
+    register_routes(app)
+
+    return app

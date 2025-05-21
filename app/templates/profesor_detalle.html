@@ -1,42 +1,229 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalle Profesor</title>
-</head>
-<body>
-    <h1>Profesor: {{ profesor.nombre_profesor }}</h1>
-    <p><strong>Facultad:</strong> {{ profesor.nombre_facultad or 'No asignada' }}</p>
-    <p><strong>Materias que dicta:</strong></p>
-    <ul>
-        {% for materia in materias %}
-            <li>{{ materia.nombre_materia }}</li>
-        {% else %}
-            <li>No hay materias asignadas.</li>
-        {% endfor %}
-    </ul>
+{% extends 'base.html' %}
 
-    <h2>Calificación promedio: 
-        {% if promedio %}
-            {{ '%.2f' | format(promedio) }} / 5
-        {% else %}
-            No hay evaluaciones aún.
-        {% endif %}
-    </h2>
+{% block title %}Detalle Profesor - {{ profesor.nombre_profesor }}{% endblock %}
 
-    <h3>Evaluaciones recientes:</h3>
-    <ul>
-        {% for eval in evaluaciones %}
-            <li>
-                <strong>Calificación:</strong> {{ eval.Calificacion }} / 5<br>
-                <strong>Comentario:</strong> {{ eval.Comentario }}<br>
-                <small>{{ eval.Fecha.strftime('%d/%m/%Y') }}</small>
-            </li>
-        {% else %}
-            <li>No hay evaluaciones todavía.</li>
-        {% endfor %}
-    </ul>
+{% block content %}
+<header class="mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('profesor.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ profesor.nombre_profesor }}</li>
+        </ol>
+    </nav>
+</header>
 
-    <a href="{{ url_for('main.dashboard') }}">Volver al Dashboard</a>
-</body>
-</html>
+<main>
+    <div class="row">
+        <div class="col-md-8">
+            <h2>{{ profesor.nombre_profesor }}</h2>
+            <p><strong>Facultad:</strong> {{ profesor.nombre_facultad or 'No asignada' }}</p>
+            <p><strong>Materias que dicta:</strong></p>
+            <ul>
+                {% for materia in materias %}
+                <li>{{ materia.nombre_materia }}</li>
+                {% else %}
+                <li>No dicta materias registradas.</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Evaluaciones</h3>
+            {% if evaluaciones %}
+            <p>Calificación promedio: <strong>{{ promedio | round(2) }}</strong> / 5</p>
+            <ul class="list-group">
+                {% for eval in evaluaciones %}
+                <li class="list-group-item">
+                    <div class="rating-display" aria-label="Calificación: {{ eval.Estrellas }} de 5 estrellas"
+                        role="img">
+                        {% for i in range(eval.Estrellas|int) %}
+                        <span class="star filled" aria-hidden="true">★</span>
+                        {% endfor %}
+                        {% for i in range(5 - eval.Estrellas|int) %}
+                        <span class="star empty" aria-hidden="true">☆</span>
+                        {% endfor %}
+                    </div>
+
+                    <p>{{ eval.Comentario or 'Sin comentario' }}</p>
+                    <small class="text-muted">{{ eval.Fecha.strftime('%d/%m/%Y') }}</small>
+
+                    {% if eval.ID_usuario == session['user_id'] %}
+                    <button class="btn btn-sm btn-outline-primary editar-evaluacion-btn"
+                        data-id="{{ eval.ID_evaluacion }}" data-estrellas="{{ eval.Estrellas }}"
+                        data-comentario="{{ eval.Comentario | e }}">
+                        Editar
+                    </button>
+
+                    <form method="post"
+                        action="{{ url_for('evaluacion.eliminar_evaluacion', id_profesor=profesor.ID_profesor) }}"
+                        style="display:inline;"
+                        onsubmit="return confirm('¿Seguro que quieres eliminar esta evaluación?');">
+                        <input type="hidden" name="id_evaluacion" value="{{ eval.ID_evaluacion }}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                    </form>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No hay evaluaciones para este profesor.</p>
+            {% endif %}
+
+            {% if total_pages > 1 %}
+            <nav aria-label="Paginación de evaluaciones">
+                <ul class="pagination mt-3">
+                    <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="{{ url_for('profesor.profesor_detalle', id=profesor.ID_profesor, page=page-1) }}"
+                            tabindex="-1" aria-disabled="{{ 'true' if page <= 1 else 'false' }}">Anterior</a>
+                    </li>
+
+                    {% for p in range(1, total_pages + 1) %}
+                    <li class="page-item {% if p == page %}active{% endif %}">
+                        <a class="page-link"
+                            href="{{ url_for('profesor.profesor_detalle', id=profesor.ID_profesor, page=p) }}">{{ p
+                            }}</a>
+                    </li>
+                    {% endfor %}
+
+                    <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="{{ url_for('profesor.profesor_detalle', id=profesor.ID_profesor, page=page+1) }}"
+                            aria-disabled="{{ 'true' if page >= total_pages else 'false' }}">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+            {% endif %}
+
+
+            <h3>Agregar nueva evaluación</h3>
+            <form method="post" action="{{ url_for('evaluacion.agregar_evaluacion', id=profesor.ID_profesor) }}"
+                class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="estrellas" class="form-label">Calificación (1 a 5):</label>
+                    <select name="estrellas" id="estrellas" class="form-select" required>
+                        <option value="">Seleccione una calificación</option>
+                        {% for i in range(1, 6) %}
+                        <option value="{{ i }}">{{ i }} {% if i == 1 %}estrella{% else %}estrellas{% endif %}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">Por favor seleccione una calificación</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="comentario" class="form-label">Comentario (opcional):</label>
+                    <textarea name="comentario" id="comentario" class="form-control" rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enviar evaluación</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editarEvaluacionModal" tabindex="-1" aria-labelledby="editarEvaluacionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editarEvaluacionForm" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editarEvaluacionModalLabel">Editar Evaluación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="id_evaluacion" name="id_evaluacion">
+                        <div class="mb-3">
+                            <label for="estrellas_modal" class="form-label">Estrellas</label>
+                            <input type="number" class="form-control" id="estrellas_modal" name="estrellas" min="1"
+                                max="5" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comentario_modal" class="form-label">Comentario</label>
+                            <textarea class="form-control" id="comentario_modal" name="comentario" rows="3"
+                                required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<!-- Estilos para estrellas -->
+<style>
+    .rating-display .star.filled {
+        color: #ffc107;
+        font-size: 1.5rem;
+    }
+
+    .rating-display .star.empty {
+        color: #ddd;
+        font-size: 1.5rem;
+    }
+
+    .rating-display .star {
+        padding: 0 2px;
+        user-select: none;
+    }
+</style>
+
+<!-- Script de Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script para manejo del modal -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var editarModal = new bootstrap.Modal(document.getElementById('editarEvaluacionModal'));
+        var form = document.getElementById('editarEvaluacionForm');
+
+        document.querySelectorAll('.editar-evaluacion-btn').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                var idEvaluacion = this.getAttribute('data-id');
+                var estrellas = this.getAttribute('data-estrellas');
+                var comentario = this.getAttribute('data-comentario');
+
+                document.getElementById('id_evaluacion').value = idEvaluacion;
+                document.getElementById('estrellas_modal').value = estrellas;
+                document.getElementById('comentario_modal').value = comentario;
+
+                editarModal.show();
+            });
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var idEvaluacion = document.getElementById('id_evaluacion').value;
+            var estrellas = document.getElementById('estrellas_modal').value;
+            var comentario = document.getElementById('comentario_modal').value;
+
+            fetch(`/evaluaciones/editar_ajax/${idEvaluacion}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ estrellas: estrellas, comentario: comentario })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        editarModal.hide();
+                        // Opcional: mostrar un mensaje éxito, o actualizar la tabla sin recargar
+                        location.reload(); // o actualizar solo lo necesario
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error en la conexión');
+                    console.error(error);
+                });
+        });
+    });
+
+</script>
+{% endblock %}
