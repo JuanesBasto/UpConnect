@@ -7,9 +7,25 @@ main = Blueprint('main', __name__)
 @main.route('/registro', methods=['GET', 'POST'])
 def registro():
     conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("SELECT ID_carrera, Nombre FROM Carreras")
-    carreras = cur.fetchall()
+    cur = conn.cursor(dictionary=True)
+    cur.execute("""
+        SELECT c.ID_carrera, c.Nombre AS nombre_carrera, f.Nombre AS nombre_facultad
+        FROM Carreras c
+        JOIN Facultades f ON c.ID_facultad = f.ID_facultad
+        ORDER BY f.Nombre, c.Nombre
+    """)
+    carreras_raw = cur.fetchall()
+
+    # Agrupar por facultad
+    from collections import defaultdict
+    carreras_por_facultad = defaultdict(list)
+
+    for carrera in carreras_raw:
+        carreras_por_facultad[carrera["nombre_facultad"]].append({
+            "ID_carrera": carrera["ID_carrera"],
+            "nombre_carrera": carrera["nombre_carrera"]
+        })
+
 
     if request.method == 'POST':
         nombre = request.form.get('nombre')
@@ -55,7 +71,7 @@ def registro():
             cur.close()
             conn.close()
 
-    return render_template('register.html', carreras=carreras)
+    return render_template('register.html', carreras_por_facultad=carreras_por_facultad)
 
 @main.route('/login', methods =['GET', 'POST'])
 def login():
@@ -91,3 +107,48 @@ def dashboard():
         flash("Debes iniciar sesión primero", "warning")
         return redirect(url_for("main.login"))
 
+@main.route('/profesores/<int:id>')
+def profesor_detalle(id):
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+
+    # Consulta datos del profesor junto con facultad (si tienes relación)
+    cur.execute("""
+        SELECT p.ID_profesor, p.Nombre AS nombre_profesor, f.Nombre AS nombre_facultad
+        FROM Profesores p
+        LEFT JOIN Facultades f ON p.ID_facultad = f.ID_facultad
+        WHERE p.ID_profesor = %s
+    """, (id,))
+    profesor = cur.fetchone()
+
+    if not profesor:
+        flash("Profesor no encontrado", "warning")
+        return redirect(url_for('main.dashboard'))
+
+    # Consulta materias que dicta el profesor
+    cur.execute("""
+        SELECT m.Nombre AS nombre_materia
+        FROM Materias m
+        INNER JOIN profesores_materias pm ON m.ID_materia = pm.ID_materia
+        WHERE pm.ID_profesor = %s
+    """, (id,))
+    materias = cur.fetchall()
+
+    # Consulta evaluaciones
+    cur.execute("""
+        SELECT Estrellas, Comentario, Fecha
+        FROM Evaluaciones
+        WHERE ID_profesor = %s
+        ORDER BY Fecha DESC
+    """, (id,))
+    evaluaciones = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    # Calcular promedio de calificaciones si hay evaluaciones
+    promedio = None
+    if evaluaciones:
+        promedio = sum(e['Calificacion'] for e in evaluaciones) / len(evaluaciones)
+
+    return render_template('profesor_detalle.html', profesor=profesor, materias=materias, evaluaciones=evaluaciones, promedio=promedio)

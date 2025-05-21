@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Profesor</title>
+</head>
+<body>
+    <h1>Profesor: {{ profesor.nombre_profesor }}</h1>
+    <p><strong>Facultad:</strong> {{ profesor.nombre_facultad or 'No asignada' }}</p>
+    <p><strong>Materias que dicta:</strong></p>
+    <ul>
+        {% for materia in materias %}
+            <li>{{ materia.nombre_materia }}</li>
+        {% else %}
+            <li>No hay materias asignadas.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Calificación promedio: 
+        {% if promedio %}
+            {{ '%.2f' | format(promedio) }} / 5
+        {% else %}
+            No hay evaluaciones aún.
+        {% endif %}
+    </h2>
+
+    <h3>Evaluaciones recientes:</h3>
+    <ul>
+        {% for eval in evaluaciones %}
+            <li>
+                <strong>Calificación:</strong> {{ eval.Calificacion }} / 5<br>
+                <strong>Comentario:</strong> {{ eval.Comentario }}<br>
+                <small>{{ eval.Fecha.strftime('%d/%m/%Y') }}</small>
+            </li>
+        {% else %}
+            <li>No hay evaluaciones todavía.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('main.dashboard') }}">Volver al Dashboard</a>
+</body>
+</html>

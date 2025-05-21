@@ -1,3 +1,17 @@
-<!-- templates/dashboard.html -->
-<h2>Bienvenido, {{ session['usuario'] }}!</h2>
-<a href="{{ url_for('main.logout') }}">Cerrar sesión</a>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Bienvenido, {{ session['usuario'] }}</h2>
+
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action disabled">📝 Foro de información importante (en desarrollo)</a><br>
+        <a href="#" class="list-group-item list-group-item-action disabled">🛍️ Foro de ventas y emprendimientos (en desarrollo)</a><br>
+        <a href="#" class="list-group-item list-group-item-action disabled">👨‍🏫 Consulta de profesores (en desarrollo)</a><br>
+        <a href="#" class="list-group-item list-group-item-action disabled">🗺️ Mapa interactivo (en desarrollo)</a><br>
+        <a href="#" class="list-group-item list-group-item-action disabled">📚 Foros de materias (en desarrollo)</a><br>
+    </div>
+
+    <a href="{{ url_for('main.logout') }}" class="btn btn-danger mt-4">Cerrar sesión</a>
+</div>
+{% endblock %}
