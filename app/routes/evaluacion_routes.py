@@ -1,6 +1,8 @@
-from flask import Blueprint, request, redirect, session, url_for, flash, render_template
-from app.db import get_db_connection
+from flask import Blueprint, request, redirect, session, url_for, flash
 from datetime import datetime
+from app.models.evaluacion_models import (ya_evaluo, insertar_evaluacion, actualizar_evaluacion, eliminar_evaluacion)
+
+
 
 evaluacion_bp = Blueprint('evaluacion', __name__)
 
@@ -13,27 +15,16 @@ def agregar_evaluacion(id):
     user_id = session['user_id']
     estrellas = int(request.form['estrellas'])
     comentario = request.form.get('comentario') or ''
-    fecha = datetime.now()
 
     if not (1 <= estrellas <= 5):
         flash("La calificación debe estar entre 1 y 5", "danger")
         return redirect(url_for('profesor.profesor_detalle', id=id))
 
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("SELECT 1 FROM Evaluaciones WHERE ID_profesor = %s AND ID_usuario = %s", (id, user_id))
-    if cur.fetchone():
+    if ya_evaluo(id, user_id):
         flash("Ya has evaluado a este profesor", "warning")
         return redirect(url_for('profesor.profesor_detalle', id=id))
 
-    cur.execute("""
-        INSERT INTO Evaluaciones (ID_profesor, ID_usuario, Estrellas, Comentario, Fecha)
-        VALUES (%s, %s, %s, %s, %s)
-    """, (id, user_id, estrellas, comentario, fecha))
-    conn.commit()
-    cur.close()
-    conn.close()
-
+    insertar_evaluacion(id, user_id, estrellas, comentario)
     flash("¡Gracias por tu evaluación!", "success")
     return redirect(url_for('profesor.profesor_detalle', id=id))
 
@@ -46,36 +37,16 @@ def editar_evaluacion_ajax(id_evaluacion):
     estrellas = data.get('estrellas')
     comentario = data.get('comentario')
 
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("""
-        UPDATE Evaluaciones
-        SET Estrellas = %s, Comentario = %s, Fecha = CURDATE()
-        WHERE ID_evaluacion = %s AND ID_usuario = %s
-    """, (estrellas, comentario, id_evaluacion, session['user_id']))
-    conn.commit()
-    cur.close()
-    conn.close()
-    
-    flash("¡Evaluacion actualizada!", "success")
+    actualizar_evaluacion(id_evaluacion, session['user_id'], estrellas, comentario)
+    flash("¡Evaluación actualizada!", "success")
     return {'success': True, 'message': 'Evaluación actualizada'}
 
-
 @evaluacion_bp.route('/evaluaciones/eliminar/<int:id_profesor>', methods=["POST"])
-def eliminar_evaluacion(id_profesor):
+def eliminar_evaluacion_route(id_profesor):
     if 'user_id' not in session:
         flash("Debes iniciar sesión", "warning")
         return redirect(url_for('auth.login'))
 
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("""
-        DELETE FROM Evaluaciones
-        WHERE ID_profesor = %s AND ID_usuario = %s
-    """, (id_profesor, session['user_id']))
-    conn.commit()
-    cur.close()
-    conn.close()
-
+    eliminar_evaluacion(id_profesor, session['user_id'])
     flash("Evaluación eliminada correctamente.", "info")
-    return redirect(url_for('profesor.profesor_detalle', id=id_profesor))
+    return redirect(url_for('profesor.profesor_detalle', slug=id_profesor))
