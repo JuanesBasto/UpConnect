@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block head_css %}
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- jQuery (Select2 depende de jQuery) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<h2>Consulta de Profesores</h2>
+<input type="text" id="buscador" placeholder="Buscar profesor..." class="form-control mb-3">
+
+<ul id="lista-profesores" class="list-group">
+    {% for profe in profesores %}
+    <li class="list-group-item d-flex justify-content-between align-items-center flex-column flex-md-row"
+        data-nombre="{{ profe.Nombre  }}">
+        <div class="mb-2 mb-md-0">
+            <a href="{{ url_for('profesor.profesor_detalle', slug=profe.Slug) }}">
+                <strong>{{ profe.Nombre }}</strong>
+            </a><br>
+            <small>{{ profe.Correo }} | {{ profe.Facultad }}</small>
+        </div>
+        <span class="badge bg-primary rounded-pill">⭐ {{ profe.Promedio }}</span>
+    </li>
+    {% endfor %}
+</ul>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('buscador');
+        input.addEventListener('input', function () {
+            const filtro = this.value.toLowerCase();
+            const items = document.querySelectorAll('#lista-profesores li');
+
+            items.forEach(item => {
+                const nombre = item.getAttribute('data-nombre') || '';
+                if (nombre.toLowerCase().includes(filtro)) {
+                    item.classList.remove('d-none');
+                } else {
+                    item.classList.add('d-none');
+                }
+            });
+        });
+    });
+</script>
+
+
+{% endblock %}

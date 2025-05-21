@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Entornos virtuales
+venv/
+env/
+
+# Flask session files
+flask_session/
+
+# Archivos temporales
+*.log
+*.sqlite3
+*.db
+.DS_Store
+
+# Archivos de configuración de VSCode
+.vscode/
+
+# Archivos de sistema
+Thumbs.db

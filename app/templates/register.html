@@ -9,18 +9,19 @@
 </head>
 
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     <h1>Registro de Usuario</h1>
     <form method="POST" action="/registro">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
+
 
         <input type="text" name="nombre" placeholder="Nombre" required>
         <input type="text" name="apellido" placeholder="Apellido" required>
@@ -32,12 +33,22 @@
         <input type="number" name="semestre" min="1" max="10" placeholder="Semestre" required>
         <input type="text" name="semillero" placeholder="Semillero">
         <label for="carrera">Carrera:</label>
-        <select name="ID_carrera" id="carrera" required>
-            <option value="" disabled selected>Seleccione una carrera</option>
-            {% for id_carrera, nombre in carreras %}
-            <option value="{{ id_carrera }}">{{ nombre }}</option>
-            {% endfor %}
-        </select>
+        <div class="mb-3">
+            <label for="id_carrera" class="form-label">Carrera</label>
+            <select name="id_carrera" id="id_carrera" class="form-select" required>
+                <option value="" disabled selected>Seleccione una carrera</option>
+                {% for facultad, carreras in carreras_por_facultad.items() %}
+                <optgroup label="{{ facultad }}">
+                    {% for carrera in carreras %}
+                    <option value="{{ carrera.ID_carrera }}">{{ carrera.nombre_carrera }}</option>
+                    {% endfor %}
+                </optgroup>
+                {% endfor %}
+            </select>
+        </div>
+
+
+
 
         <button type="submit">Registrarse</button>
     </form>

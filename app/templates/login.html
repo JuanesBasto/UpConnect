@@ -15,7 +15,7 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-    <form method="POST">
+    <form action="{{ url_for('auth.login') }}" method="POST">
         <div class="mb-3">
             <label for="correo" class="form-label">Correo institucional</label>
             <input type="email" class="form-control" id="correo" name="correo" required>
