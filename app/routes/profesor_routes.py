@@ -26,7 +26,10 @@ def profesor_detalle(slug):
 
     if not profesor:
         flash("Profesor no encontrado", "warning")
-        return redirect(url_for('profesor.dashboard'))
+        return redirect(url_for('main.dashboard'))
+
+    # Aquí extraemos el id del profesor para usarlo en las siguientes consultas
+    id = profesor['ID_profesor']
 
     cur.execute("""
         SELECT m.Nombre AS nombre_materia
@@ -49,7 +52,6 @@ def profesor_detalle(slug):
     """, (id, per_page, offset))
     evaluaciones = cur.fetchall()
 
-    
     promedio = None
     if total_eval > 0:
         cur.execute("SELECT AVG(Estrellas) AS promedio FROM Evaluaciones WHERE ID_profesor = %s", (id,))
@@ -67,6 +69,7 @@ def profesor_detalle(slug):
                            promedio=promedio,
                            page=page,
                            total_pages=total_pages)
+
     
 @profesor_bp.route('/profesores')
 def listar_profesores():

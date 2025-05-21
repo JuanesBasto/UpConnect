@@ -76,7 +76,7 @@ def login():
         if usuario and check_password_hash(usuario['Contrasena'], contrasena):
             session['user_id'] = usuario['ID_usuario']
             flash("Inicio de sesión exitoso", "success")
-            return redirect(url_for("profesor.dashboard"))
+            return redirect(url_for("main.dashboard"))
         else:
             flash("Correo o contraseña incorrectos", "danger")
 
