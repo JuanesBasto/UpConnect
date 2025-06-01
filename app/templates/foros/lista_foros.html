@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Foros{% endblock %}
+
+{% block content %}
+<h2>Foros de la materia</h2>
+
+<ul>
+  {% for foro in foros %}
+    <li>
+      <a href="{{ url_for('foro.ver_publicaciones', id_foro=foro.ID_foro) }}">
+        {% if foro.nombre_grupo %}
+          Grupo {{ foro.nombre_grupo }}
+        {% else %}
+          General
+        {% endif %}
+      </a>
+    </li>
+  {% else %}
+    <li>No hay foros disponibles.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

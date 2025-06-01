@@ -18,15 +18,15 @@ def agregar_evaluacion(id):
 
     if not (1 <= estrellas <= 5):
         flash("La calificación debe estar entre 1 y 5", "danger")
-        return redirect(url_for('profesor.profesor_detalle', id=id))
+        return redirect(url_for('profesor.profesor_detalle', slug=id))
 
     if ya_evaluo(id, user_id):
         flash("Ya has evaluado a este profesor", "warning")
-        return redirect(url_for('profesor.profesor_detalle', id=id))
+        return redirect(url_for('profesor.profesor_detalle', slug=id))
 
     insertar_evaluacion(id, user_id, estrellas, comentario)
     flash("¡Gracias por tu evaluación!", "success")
-    return redirect(url_for('profesor.profesor_detalle', id=id))
+    return redirect(url_for('profesor.profesor_detalle', slug=id))
 
 @evaluacion_bp.route('/evaluaciones/editar_ajax/<int:id_evaluacion>', methods=['POST'])
 def editar_evaluacion_ajax(id_evaluacion):

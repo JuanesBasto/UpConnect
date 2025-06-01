@@ -26,6 +26,7 @@
 
 ## 📂 Estructura del proyecto
 
+```
 UpConnect/
 │
 ├── app/
