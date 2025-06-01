@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Soporte - UpConnect</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body {
+      background: #181b2f;
+      color: #fff;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+    }
+    .soporte-header {
+      padding: 3rem 0 1.5rem 0;
+      text-align: center;
+      background: linear-gradient(90deg, #ffd34b 60%, #5d6bff 100%);
+      color: #23244b;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 900;
+      letter-spacing: 2px;
+      font-size: 2.2rem;
+      border-radius: 0 0 46px 46px;
+      box-shadow: 0 4px 32px #ffd34b22;
+    }
+    .soporte-card {
+      background: rgba(45,48,80,0.95);
+      border-radius: 22px;
+      border: 1.6px solid #5d6bff44;
+      box-shadow: 0 4px 18px #ffd34b33;
+      margin-bottom: 2.2rem;
+      padding: 2.2rem 1.3rem;
+      text-align: center;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .soporte-card:hover {
+      box-shadow: 0 8px 38px #5d6bff22;
+      transform: translateY(-5px) scale(1.03);
+    }
+    .soporte-card h5 {
+      color: #5d6bff;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+    }
+    .soporte-contact {
+      color: #ffd34b;
+      font-weight: 600;
+      font-size: 1.15rem;
+      margin-bottom: 1.1rem;
+    }
+    .soporte-link {
+      color: #5d6bff;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.18s;
+    }
+    .soporte-link:hover {
+      color: #ffd34b;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="soporte-header">
+    <i class="fas fa-headset"></i> Soporte y Ayuda
+  </div>
+  <div class="container py-4">
+    <div class="soporte-card mx-auto" style="max-width: 520px;">
+      <h5>¿Necesitas ayuda?</h5>
+      <p>Puedes contactarnos por:</p>
+      <div class="soporte-contact">
+        <i class="fas fa-envelope"></i> <a class="soporte-link" href="mailto:info@upconnect.com">info@upconnect.com</a><br>
+        <i class="fab fa-whatsapp"></i> <a class="soporte-link" href="https://wa.me/573001234567">+57 300 123 4567</a>
+      </div>
+      <p>O llena el <a class="soporte-link" href="index.html#contacto">formulario de contacto</a> y te responderemos a la brevedad.</p>
+    </div>
+    <a class="soporte-link" href="index.html"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+  </div>
+</body>
+</html>

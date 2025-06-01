@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Torneo Deportivo - UpConnect</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body {
+      background: #181a2f;
+      color: #fff;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+    }
+    .evento-header {
+      background: linear-gradient(90deg, #5d6bff 60%, #ffd34b 100%);
+      color: #23244b;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-align: center;
+      padding: 2.3rem 0 1.3rem 0;
+      border-radius: 0 0 48px 48px;
+      box-shadow: 0 4px 32px #5d6bff22;
+    }
+    .evento-img {
+      display: block;
+      margin: 2.2rem auto 1.5rem auto;
+      max-width: 440px;
+      width: 95%;
+      border-radius: 24px;
+      box-shadow: 0 5px 38px #ffd34b33;
+      border: 3px solid #ffd34b44;
+      background: #23244b;
+    }
+    .evento-card {
+      background: rgba(45,48,80,0.96);
+      border-radius: 26px;
+      border: 1.8px solid #ffd34b44;
+      box-shadow: 0 7px 32px #5d6bff22;
+      padding: 2.3rem 1.7rem;
+      max-width: 760px;
+      margin: 0 auto 2.5rem auto;
+    }
+    .evento-fecha {
+      color: #ffd34b;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+    }
+    .evento-desc {
+      color: #e2e4fa;
+      font-size: 1.14rem;
+      margin-bottom: 1.3rem;
+    }
+    .evento-section-title {
+      color: #5d6bff;
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    .evento-list li {
+      margin-bottom: 0.7rem;
+    }
+    .evento-back {
+      display: inline-block;
+      margin: 2rem 0 1.5rem 0;
+      color: #ffd34b;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.08rem;
+      transition: color 0.18s;
+    }
+    .evento-back:hover {
+      color: #5d6bff;
+      text-decoration: underline;
+    }
+    .evento-inscribirse {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.7rem 2.2rem;
+      background: linear-gradient(90deg,#5d6bff 70%,#ffd34b 100%);
+      color: #181a2f;
+      font-weight: 800;
+      border-radius: 18px;
+      text-decoration: none;
+      font-size: 1.12rem;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 14px #5d6bff44;
+    }
+    .evento-inscribirse:hover {
+      background: linear-gradient(90deg,#ffd34b 70%,#5d6bff 100%);
+      color: #23244b;
+    }
+  </style>
+</head>
+<body>
+  <div class="evento-header">
+    <i class="fas fa-trophy"></i> Torneo Deportivo
+  </div>
+  <div class="container py-4">
+    <img src="./images/3333.jfif" alt="Torneo Deportivo" class="evento-img">
+    <div class="evento-card">
+      <div class="evento-fecha"><i class="far fa-calendar-alt"></i> 5-8 Julio</div>
+      <div class="evento-desc">
+        Competiciones interfacultades de fútbol, baloncesto y más. ¡Participa como atleta o apoya a tu facultad!
+      </div>
+      <div class="evento-section-title">Disciplinas:</div>
+      <ul class="evento-list">
+        <li><b>Fútbol</b> masculino y femenino.</li>
+        <li><b>Baloncesto</b> 5x5 y 3x3.</li>
+        <li><b>Voleibol</b> mixto.</li>
+        <li><b>Atletismo</b> y más.</li>
+      </ul>
+      <div class="evento-section-title">Premios y reconocimientos</div>
+      <div>Trofeos, medallas y certificados para los ganadores. ¡Demuestra tu espíritu deportivo!</div>
+      <a class="evento-inscribirse" href="#">Inscribirse</a>
+      <br>
+      <a class="evento-back" href="index.html"><i class="fas fa-arrow-left"></i> Volver a eventos</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UpConnect - Tu vida universitaria en un solo lugar</title>
+  <!-- Google Fonts, Bootstrap, FontAwesome, Swiper, AOS -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <style>
+      .btn-login-custom {
+      background: linear-gradient(90deg, #5d6bff 60%, #23244b 100%);
+      color: #fff !important;
+      border: none;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+      border-radius: 28px;
+      padding: 0.7rem 2.1rem;
+      font-size: 1.17rem;
+      box-shadow: 0 2px 10px #5d6bff44;
+      letter-spacing: 1px;
+      transition: background 0.22s, color 0.22s, transform 0.18s;
+      display: flex; align-items: center; gap: 6px;
+      margin-right: 0.7rem;
+    }
+    .btn-login-custom:hover {
+      background: #23244b;
+      color: #ffd34b !important;
+      transform: scale(1.07);
+    }
+    .btn-upconnect {
+      background: linear-gradient(90deg, #5d6bff 60%, #ffd34b 100%);
+      color: #181b2f !important;
+      border: none;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+      border-radius: 28px;
+      padding: 0.7rem 2.1rem;
+      margin-right: 0.7rem;
+      box-shadow: 0 2px 10px #5d6bff44;
+      letter-spacing: 1px;
+      font-size: 1.17rem;
+      transition: background 0.2s, color 0.2s, transform 0.18s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .btn-upconnect:hover {
+      background: #ffd34b;
+      color: #222 !important;
+      transform: scale(1.07);
+    }
+    body {
+      background: #181b2f;
+      color: #fff;
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+    }
+    .navbar {
+      background: rgba(18,18,38,0.96);
+      box-shadow: 0 4px 16px #0005;
+      border-bottom: 2px solid #5d6bff44;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+    }
+    .navbar-brand {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      color: #5d6bff !important;
+      text-shadow: 2px 2px 10px #2b2b3d99;
+    }
+    .nav-link {
+      color: #fff !important;
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 1.08rem;
+      margin-right: 0.7rem;
+      transition: color 0.2s;
+    }
+    .nav-link.active, .nav-link:hover {
+      color: #ffd34b !important;
+    }
+    .btn-upconnect {
+      background: linear-gradient(90deg, #5d6bff 60%, #ffd34b 100%);
+      color: #181b2f;
+      border: none;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+      border-radius: 28px;
+      padding: 0.7rem 2.1rem;
+      margin-right: 0.7rem;
+      box-shadow: 0 2px 10px #5d6bff44;
+      letter-spacing: 1px;
+      font-size: 1.17rem;
+      transition: background 0.2s, color 0.2s, transform 0.18s;
+    }
+    .btn-upconnect:hover {
+      background: #ffd34b;
+      color: #222;
+      transform: scale(1.07);
+    }
+    /* HERO */
+    .hero-upc {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      padding: 68px 0 48px 0;
+    }
+    .hero-content {
+      z-index: 2;
+      max-width: 530px;
+    }
+    .hero-title {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #ffd34b;
+      text-shadow: 2px 2px 16px #222d;
+      margin-bottom: 18px;
+      line-height: 1.1;
+    }
+    .hero-desc {
+      color: #fff;
+      font-size: 1.24rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 2.2rem;
+      letter-spacing: 0.2px;
+      text-shadow: 1px 1px 10px #222b;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge {
+      background: rgba(93,107,255,0.13);
+      color: #5d6bff;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 0.3rem 1.1rem;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      letter-spacing: .5px;
+      border: 1.5px solid #5d6bff55;
+      box-shadow: 0 2px 8px #5d6bff27;
+    }
+    .hero-slider {
+      width: 370px;
+      min-width: 210px;
+      max-width: 420px;
+      aspect-ratio: 4/5;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 10px 36px #000b, 0 2px 18px #5d6bff33;
+      background: #22244a;
+      position: relative;
+      z-index: 3;
+    }
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1s cubic-bezier(.4,2,.3,1);
+    }
+    .swiper-slide-active img {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 4px 22px #5d6bff33;
+    }
+    .swiper-pagination-bullet {
+      background: #ffd34b !important;
+      opacity: 0.8;
+    }
+    /* SECCION QUE ES */
+    .glass-section {
+      background: rgba(45,48,80,0.87);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 40px #5d6bff22;
+      border-radius: 24px;
+    }
+    .glass-section ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    .glass-section ul li {
+      display: inline-block;
+      margin-right: 30px;
+      font-size: 1.08rem;
+    }
+    /* Stats quick */
+    .stats-quick {
+      background: #22244a;
+      border-radius: 18px;
+      box-shadow: 0 2px 18px #5d6bff19;
+      margin-bottom: 32px;
+      border: 1.7px solid #ffd34b44;
+    }
+    .stats-icon {
+      font-size: 2.2rem;
+      color: #ffd34b;
+      margin-bottom: 5px;
+      transition: transform 0.35s;
+    }
+    .stats-value {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #fff;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+    }
+    .stats-label {
+      color: #5d6bff;
+      font-size: 1.02rem;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+    .stats-quick .col-6:hover .stats-icon {
+      transform: scale(1.17) rotate(-8deg);
+    }
+    /* Features */
+    .feature-card {
+      border-radius: 18px;
+      box-shadow: 0 2px 10px #5d6bff16;
+      background: #181b2f;
+      color: #fff;
+      border: 1.4px solid #ffd34b33;
+      transition: transform 0.36s cubic-bezier(.4,2,.3,1), box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .feature-img-container {
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      border-radius: 16px 16px 0 0;
+      background: #292d49;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .feature-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(.4,2,.3,1);
+      border-radius: 16px 16px 0 0;
+    }
+    .feature-img-container:hover img {
+      transform: scale(1.12) rotate(-2deg);
+    }
+    .feature-icon {
+      font-size: 2.2rem;
+      color: #ffd34b;
+      margin-bottom: 12px;
+      margin-top: 10px;
+      transition: transform 0.4s cubic-bezier(.4,2,.3,1);
+    }
+    .feature-card h5 {
+      font-size: 1.34rem;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+      margin: 10px 0 6px 0;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .feature-card p {
+      font-size: 1.09rem;
+      color: #e0e0e0;
+      font-weight: 600;
+      text-shadow: 0 2px 8px #181b2f88;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px) scale(1.045);
+      box-shadow: 0 6px 26px #ffd34b33;
+      border-color: #ffd34b88;
+    }
+    .feature-card:hover .feature-icon {
+      transform: scale(1.18) rotate(6deg);
+    }
+    /* Beneficios */
+    .benefit-card {
+      background: rgba(45,48,80,0.7);
+      backdrop-filter: blur(6px);
+      border-radius: 18px;
+      box-shadow: 0 2px 18px #5d6bff16;
+      padding: 1.5rem 1rem;
+      font-weight: 700;
+      color: #fff;
+      transition: background 0.2s, transform 0.25s;
+      border: 1.5px solid #ffd34b33;
+    }
+    .benefit-card:hover {
+      background: rgba(93,107,255,0.17);
+      color: #ffd34b;
+      transform: translateY(-8px) scale(1.04);
+    }
+    /* EVENTOS SECTION */
+    .event-card {
+      background: #22244a;
+      border-radius: 20px;
+      box-shadow: 0 2px 18px #5d6bff19;
+      border: 1.7px solid #ffd34b44;
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .event-img-container {
+      width: 100%;
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+      background: #181b2f;
+    }
+    .event-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(.4,2,.3,1);
+      border-radius: 20px 20px 0 0;
+    }
+    .event-img-container:hover img {
+      transform: scale(1.11) rotate(-2deg);
+    }
+    .event-info {
+      padding: 1.3rem 1.1rem;
+      text-align: center;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .event-title {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+      color: #ffd34b;
+      font-size: 1.2rem;
+    }
+    .event-date {
+      color: #5d6bff;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .event-desc {
+      color: #ececec;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+    }
+    .btn-event {
+      background: #5d6bff;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 22px;
+      padding: 0.3rem 1.2rem;
+      border: none;
+      transition: background 0.18s, transform 0.18s;
+      font-size: 1.01rem;
+    }
+    .btn-event:hover {
+      background: #ffd34b;
+      color: #22244a;
+      transform: scale(1.07);
+    }
+    /* Testimonios */
+    .testimonial-card {
+      background: linear-gradient(120deg,#5d6bff22 0,#ffd34b22 100%);
+      border-radius: 18px;
+      box-shadow: 0 2px 10px #5d6bff12;
+      padding: 1.7rem;
+      transition: transform 0.4s cubic-bezier(.4,2,.3,1), box-shadow 0.3s;
+      color: #fff;
+      min-height: 205px;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .testimonial-card:hover {
+      transform: scale(1.035) translateY(-6px);
+      box-shadow: 0 8px 22px #ffd34b33;
+      color: #ffd34b;
+    }
+    .testimonial-img {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+      border: 3px solid #fff;
+      box-shadow: 0 1px 6px rgba(60,70,255,0.11);
+      transition: transform 0.5s cubic-bezier(.4,2,.3,1);
+    }
+    .testimonial-card:hover .testimonial-img {
+      transform: scale(1.13) rotate(3deg);
+    }
+    /* Contact */
+    .contact-section {
+      background: #22244a;
+      border-radius: 22px;
+      box-shadow: 0 2px 18px #5d6bff19;
+      padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+      max-width: 600px;
+      margin: 0 auto 2.5rem auto;
+      border: 1.7px solid #5d6bff44;
+    }
+    .contact-section h3 {
+      color: #ffd34b;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+      text-align: center;
+      text-shadow: 0 2px 8px #181b2f88;
+    }
+    .form-label, .form-control {
+      color: #fff !important;
+      background: #23244b !important;
+      border-radius: 16px;
+      border: 1px solid #5d6bff77 !important;
+    }
+    .form-control:focus {
+      border: 1.5px solid #ffd34b !important;
+      background: #292d49 !important;
+      color: #fff !important;
+      box-shadow: 0 2px 16px #5d6bff22;
+    }
+    .btn-upconnect-contact {
+      background: linear-gradient(90deg, #5d6bff 60%, #ffd34b 100%);
+      color: #181b2f;
+      border: none;
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: 700;
+      border-radius: 28px;
+      padding: 0.7rem 2.1rem;
+      box-shadow: 0 2px 10px #5d6bff44;
+      letter-spacing: 1px;
+      font-size: 1.17rem;
+      transition: background 0.2s, color 0.2s, transform 0.18s;
+      margin-top: 0.7rem;
+      width: 100%;
+    }
+    .btn-upconnect-contact:hover {
+      background: #ffd34b;
+      color: #222;
+      transform: scale(1.04);
+    }
+    /* Instagram grid */
+    .insta-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 2.5rem auto 1rem;
+      max-width: 640px;
+    }
+    .insta-grid img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px #0007;
+      transition: transform 0.4s cubic-bezier(.4,2,.3,1), box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .insta-grid img:hover {
+      transform: scale(1.12) rotate(-3deg);
+      box-shadow: 0 8px 24px #5d6bff44;
+      z-index: 3;
+    }
+    /* Footer */
+    footer {
+      background: #181b2f;
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -2px 12px #5d6bff19;
+      margin-top: 60px;
+      padding: 2.5rem 0 1rem 0;
+      color: #ffd34b;
+      border-top: 2.5px solid #5d6bff44;
+      font-size: 1.09rem;
+      position: relative;
+    }
+    .footer-link {
+      color: #ffd34b;
+      text-decoration: none;
+      font-weight: 600;
+      margin-right: 1.15rem;
+      transition: color 0.2s;
+    }
+    .footer-link:hover { color: #5d6bff; }
+    .footer-social .footer-link {
+      font-size: 1.3rem;
+      margin-right: 10px;
+    }
+    .footer-brand {
+      font-family: 'Space Grotesk', Arial, sans-serif;
+      font-weight: bold;
+      letter-spacing: 1.2px;
+      font-size: 1.31rem;
+      color: #5d6bff;
+    }
+    .footer-desc {
+      color: #bbb;
+      font-size: 1.07rem;
+      margin-bottom: 1rem;
+    }
+    .footer-insta {
+      color: #fff;
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+    }
+    /* Responsive */
+    @media (max-width: 950px) {
+      .hero-upc { flex-direction: column; align-items: flex-start; gap: 2.2rem; }
+      .hero-slider { margin: 0 auto; }
+    }
+    @media (max-width: 700px) {
+      .insta-grid { grid-template-columns: repeat(3, 1fr);}
+      .hero-title { font-size: 2.1rem;}
+      .hero-slider { width: 100%; max-width: 350px; }
+    }
+    @media (max-width: 420px) {
+      .hero-title { font-size: 1.2rem;}
+      .insta-grid { grid-template-columns: repeat(2, 1fr);}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+ <!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top px-2">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><i class="fas fa-graduation-cap"></i> UpConnect</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto ms-3">
+        <li class="nav-item"><a class="nav-link active" href="#que-es">Ideas</a></li>
+        <li class="nav-item"><a class="nav-link" href="#funcionalidades">Servicios</a></li>
+        <li class="nav-item"><a class="nav-link" href="#beneficios">Beneficios</a></li>
+        <li class="nav-item"><a class="nav-link" href="#eventos">Eventos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#lookbook">Galería</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+      </ul>
+      <div class="d-flex">
+        <!-- Botón Regístrate -->
+        <a href="signup.html" class="btn btn-upconnect"><i class="fas fa-user-plus"></i> Regístrate</a>
+        <!-- Botón Login nuevo -->
+        <a href="login.html" class="btn btn-login-custom"><i class="fas fa-sign-in-alt"></i> Login</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-upc container" id="hero">
+  <div class="hero-content" data-aos="fade-right">
+    <div class="hero-badges mb-2">
+      <span class="hero-badge"><i class="fas fa-user-graduate"></i> Hecha por estudiantes</span>
+      <span class="hero-badge"><i class="fas fa-university"></i> UNIPAMPLONA</span>
+    </div>
+    <h1 class="hero-title" data-aos="zoom-in" data-aos-delay="120">Centraliza tu vida universitaria</h1>
+    <div class="hero-desc" data-aos="fade-up" data-aos-delay="280">
+      La plataforma web para estudiantes de la Universidad de Pamplona (sedes Cúcuta y Villa del Rosario) que te conecta con tu comunidad, recursos, eventos y docentes, todo en un solo lugar.
+    </div>
+    <!-- Botón Únete ahora con ícono y redirige a signup.html -->
+    <a href="signup.html" class="btn btn-upconnect" data-aos="fade-up" data-aos-delay="440">
+      <i class="fas fa-user-plus"></i> Únete ahora
+    </a>
+  </div>
+  <div class="hero-slider" data-aos="zoom-in-left">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img src="./images/u2.png" alt="Estudiantes felices">
+          </div>
+          <div class="swiper-slide">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80" alt="Presentación en campus">
+          </div>
+          <div class="swiper-slide">
+            <img src="./images/lll.png" alt="Grupo estudiando">
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCION ¿QUÉ ES UPCONNECT? -->
+  <section class="container mb-5" id="que-es" data-aos="fade-up">
+    <div class="p-4 p-md-5 glass-section">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h2 class="fw-bold" style="color:#ffd34b; font-family:'Space Grotesk',sans-serif;">
+            ¿Qué es UpConnect?
+          </h2>
+          <p style="font-size:1.18rem;color:#fff;max-width:600px;font-weight:600;">
+            UpConnect es una plataforma web hecha por y para estudiantes de la Universidad de Pamplona. Centraliza tu vida académica, fomenta la colaboración estudiantil y pone toda la información clave en un solo lugar.
+          </p>
+          <ul class="list-unstyled d-flex flex-wrap gap-4 mt-3">
+            <li>
+              <i class="fas fa-users fa-2x" style="color:#5d6bff"></i>
+              <span style="font-weight:700;color:#ffd34b;">Colabora</span>
+            </li>
+            <li>
+              <i class="fas fa-layer-group fa-2x" style="color:#ffd34b"></i>
+              <span style="font-weight:700;color:#5d6bff;">Centraliza</span>
+            </li>
+            <li>
+              <i class="fas fa-bolt fa-2x" style="color:#ffd34b"></i>
+              <span style="font-weight:700;color:#ffd34b;">Impulsa</span>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4 text-center mt-4 mt-md-0">
+          <img src="./images/u89.png" 
+               alt="UpConnect equipo" class="rounded-3 shadow-lg" style="max-width:280px;"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="container stats-quick mb-5 py-3 px-2" data-aos="fade-up">
+    <div class="row text-center">
+      <div class="col-6 col-md-3 mb-2 mb-md-0" data-aos="fade-up" data-aos-delay="80">
+        <div class="stats-icon"><i class="fas fa-users"></i></div>
+        <div class="stats-value">+5,000</div>
+        <div class="stats-label">Estudiantes activos</div>
+      </div>
+      <div class="col-6 col-md-3 mb-2 mb-md-0" data-aos="fade-up" data-aos-delay="160">
+        <div class="stats-icon"><i class="fas fa-book"></i></div>
+        <div class="stats-value">45+</div>
+        <div class="stats-label">Programas</div>
+      </div>
+      <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="240">
+        <div class="stats-icon"><i class="fas fa-calendar-alt"></i></div>
+        <div class="stats-value">100+</div>
+        <div class="stats-label">Eventos mensuales</div>
+      </div>
+      <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="320">
+        <div class="stats-icon"><i class="fas fa-award"></i></div>
+        <div class="stats-value">25+</div>
+        <div class="stats-label">Años de excelencia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNCIONALIDADES/FEATURES -->
+  <section class="container mb-5" id="funcionalidades">
+    <h3 class="fw-bold text-center mb-4" style="color:#5d6bff;">Funcionalidades principales</h3>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-card p-0 text-center h-100">
+          <div class="feature-img-container">
+            <img src="./images/4.avif" alt="Registro seguro">
+          </div>
+          <span class="feature-icon"><i class="fas fa-user-lock"></i></span>
+          <h5>Registro seguro</h5>
+          <p>Valida tu correo institucional y accede a un entorno protegido y exclusivo para estudiantes.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-card p-0 text-center h-100">
+          <div class="feature-img-container">
+            <img src="./images/5.png" alt="Dashboard personalizado">
+          </div>
+          <span class="feature-icon"><i class="fas fa-chalkboard"></i></span>
+          <h5>Multiplataforma</h5>
+          <p>¡Accede desde cualquier dispositivo!.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-card p-0 text-center h-100">
+          <div class="feature-img-container">
+            <img src="./images/fff.avif" alt="Docentes y calificaciones">
+          </div>
+          <span class="feature-icon"><i class="fas fa-star"></i></span>
+          <h5>Consulta y evalúa docentes</h5>
+          <p>Conoce profesores, califícalos y deja comentarios anónimos para mejorar la calidad docente.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="feature-card p-0 text-center h-100">
+          <div class="feature-img-container">
+            <img src="./images/mapa.png" alt="Mapa del campus">
+          </div>
+          <span class="feature-icon"><i class="fas fa-map"></i></span>
+          <h5>Mapa interactivo</h5>
+          <p>Encuentra aulas, servicios y puntos clave de tu campus en segundos, desde cualquier dispositivo.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+        <div class="feature-card p-0 text-center h-100">
+          <div class="feature-img-container">
+            <img src="./images/ss.jfif" alt="Foros y comunidad">
+          </div>
+          <span class="feature-icon"><i class="fas fa-comments"></i></span>
+          <h5>Foros temáticos y colaborativos</h5>
+          <p>Participa en foros de materias, semilleros, ventas o ayuda. Colabora, aprende y comparte.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+        <div class="feature-card p-0 text-center h-100">
+          <div class="feature-img-container">
+            <img src="./images/88.jpg" alt="Ofertas académicas">
+          </div>
+          <span class="feature-icon"><i class="fas fa-graduation-cap"></i></span>
+          <h5>Ofertas académicas</h5>
+          <p>Consulta todas las carreras, materias y facultades organizadas de manera estructurada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section class="container mb-5" id="beneficios">
+    <h3 class="fw-bold text-center mb-4" style="color:#ffd34b;">¿Por qué elegir UpConnect?</h3>
+    <div class="row g-4 text-center">
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="80">
+        <div class="benefit-card">
+          <i class="fas fa-layer-group fa-2x mb-2" style="color:#ffd34b"></i>
+          <div>Todo en un solo lugar</div>
+        </div>
+      </div>
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="160">
+        <div class="benefit-card">
+          <i class="fas fa-hands-helping fa-2x mb-2" style="color:#5d6bff"></i>
+          <div>Comunidad y apoyo</div>
+        </div>
+      </div>
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="240">
+        <div class="benefit-card">
+          <i class="fas fa-star fa-2x mb-2" style="color:#ffd34b"></i>
+          <div>Mejora la calidad docente</div>
+        </div>
+      </div>
+      <div class="col-md-3" data-aos="fade-up" data-aos-delay="320">
+        <div class="benefit-card">
+          <i class="fas fa-user-friends fa-2x mb-2" style="color:#5d6bff"></i>
+          <div>Hecho por y para estudiantes</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTOS SECTION -->
+  <section id="eventos" class="container mb-5">
+    <h3 class="fw-bold text-center mb-4" style="color:#5d6bff;" data-aos="fade-up">Próximos eventos</h3>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="0">
+        <div class="event-card">
+          <div class="event-img-container">
+            <img src="./images/1.png" alt="Semana de la Ciencia">
+          </div>
+          <div class="event-info">
+            <div>
+              <div class="event-title">Semana de la Ciencia</div>
+              <div class="event-date"><i class="far fa-calendar-alt"></i> 15-20 Mayo</div>
+              <div class="event-desc">Conferencias, talleres y exposiciones científicas para toda la comunidad universitaria.</div>
+            </div>
+            <a href="semana-ciencia.html" class="btn btn-event mt-2">Más info</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="event-card">
+          <div class="event-img-container">
+            <img src="./images/2.jfif" alt="Festival Cultural">
+          </div>
+          <div class="event-info">
+            <div>
+              <div class="event-title">Festival Cultural</div>
+              <div class="event-date"><i class="far fa-calendar-alt"></i> 10-12 Junio</div>
+              <div class="event-desc">Música, danza, teatro y exposiciones artísticas organizadas por estudiantes.</div>
+            </div>
+            <a href="festival-cultural.html" class="btn btn-event mt-2">Más info</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="event-card">
+          <div class="event-img-container">
+            <img src="./images/3.png" alt="Torneo Deportivo">
+          </div>
+          <div class="event-info">
+            <div>
+              <div class="event-title">Torneo Deportivo</div>
+              <div class="event-date"><i class="far fa-calendar-alt"></i> 5-8 Julio</div>
+              <div class="event-desc">Competencias interfacultades de fútbol, baloncesto y más. ¡Participa o anima!</div>
+            </div>
+            <a href="torneo-deportivo.html" class="btn btn-event mt-2">Inscribirse</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section id="testimonios" class="container mb-5">
+    <h3 class="fw-bold text-center mb-4" style="color:#ffd34b;" data-aos="fade-up">Lo que dicen nuestros usuarios</h3>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-left" data-aos-delay="100">
+        <div class="testimonial-card">
+          <img src="./images/es1.png" alt="Usuario" class="testimonial-img">
+          <div>
+            <h6 class="m-0 fw-bold">Carlos Rodríguez</h6>
+            <small class="text-muted">Estudiante de Ingeniería</small>
+            <p class="mb-0 mt-2">
+              <i class="fas fa-quote-left text-warning me-2"></i>
+              UpConnect me ayudó a encontrar grupos de estudio y estar al día con los eventos.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="250">
+        <div class="testimonial-card">
+          <img src="./images/prof.png" alt="Usuario" class="testimonial-img">
+          <div>
+            <h6 class="m-0 fw-bold">Ana Gómez</h6>
+            <small class="text-muted">Docente</small>
+            <p class="mb-0 mt-2">
+              <i class="fas fa-quote-left text-warning me-2"></i>
+              Ahora puedo comunicarme mejor con mis estudiantes y compartir materiales educativos.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-right" data-aos-delay="400">
+        <div class="testimonial-card">
+          <img src="./images/es2.png" alt="Usuario" class="testimonial-img">
+          <div>
+            <h6 class="m-0 fw-bold">Miguel Torres</h6>
+            <small class="text-muted">Estudiante de Medicina</small>
+            <p class="mb-0 mt-2">
+              <i class="fas fa-quote-left text-warning me-2"></i>
+              El mapa interactivo es genial, ya no me pierdo buscando salones en el campus.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOOKBOOK / GALERÍA -->
+  <section id="lookbook" class="container mb-5">
+    <h3 class="fw-bold text-center mb-4" style="color:#5d6bff;" data-aos="fade-up">Galería estudiantil</h3>
+    <div class="insta-grid" data-aos="fade-up" data-aos-delay="100">
+      <img src="./images/547.jfif" alt="Galería 1">
+      <img src="./images/555.jfif" alt="Galería 2">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Galería 3">
+      <img src="./images/888.jfif" alt="Galería 4">
+      <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=400&q=80" alt="Galería 5">
+    </div>
+    <div class="footer-insta text-center mb-2">
+      <i class="fab fa-instagram"></i> <a href="#" class="footer-link">@upconnect.unipamplona</a> — Comparte tu experiencia con <span style="color:#ffd34b;">#UpConnect</span>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="contact-section mb-5" data-aos="fade-up">
+    <h3>Contáctanos</h3>
+    <form>
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombre" required>
+      </div>
+      <div class="mb-3">
+        <label for="correo" class="form-label">Correo electrónico</label>
+        <input type="email" class="form-control" id="correo" required>
+      </div>
+      <div class="mb-3">
+        <label for="mensaje" class="form-label">Mensaje</label>
+        <textarea class="form-control" id="mensaje" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-upconnect-contact">Enviar</button>
+    </form>
+    <div class="text-center mt-4">
+      <span style="color:#ffd34b;font-weight:700;font-size:1.05rem;">
+        <i class="fas fa-headset"></i> También puedes escribirnos por WhatsApp <a href="#" class="footer-link">+57 300 123 4567</a>
+      </span>
+    </div>
+    <div class="text-center mt-3">
+      <span style="color:#5d6bff;">
+        ¿Quieres ser embajador de UpConnect? <a href="#" class="footer-link">¡Postúlate aquí!</a>
+      </span>
+    </div>
+  </section>
+
+  <!-- FOOTER SOFISTICADO -->
+  <footer class="container mt-5" data-aos="fade-up">
+    <div class="row text-center text-md-start align-items-center mb-4">
+      <div class="col-md-4 mb-3 mb-md-0">
+        <div class="footer-brand mb-2"><i class="fas fa-graduation-cap"></i> UpConnect</div>
+        <div class="footer-desc">Conectando estudiantes, docentes y oportunidades en la UNIPAMPLONA.</div>
+        <div class="footer-insta"><i class="fas fa-envelope"></i> <a href="mailto:info@upconnect.com" class="footer-link">info@upconnect.com</a></div>
+        <div class="footer-insta"><i class="fas fa-phone"></i> +57 300 123 4567</div>
+      </div>
+      <div class="col-md-4 mb-3 mb-md-0 footer-social text-center">
+        <h6 class="fw-bold mb-2">Redes</h6>
+        <a href="#" class="footer-link me-2"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="footer-link me-2"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="footer-link me-2"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" class="footer-link me-2"><i class="fab fa-github"></i></a>
+      </div>
+      <div class="col-md-4 text-md-end text-center">
+        <a href="faq.html" class="footer-link d-block mb-1">FAQ</a>
+        <a href="soporte.html" class="footer-link d-block mb-1">Soporte</a>
+        <a href="privacidad.html" class="footer-link d-block mb-1">Política de Privacidad</a>
+        <a href="terminos.html" class="footer-link d-block">Términos y Condiciones</a>
+      </div>
+    </div>
+    <hr style="border-color:#5d6bff44;">
+    <p class="text-center text-muted small mt-3 mb-0">© 2025 UpConnect. Plataforma creada por estudiantes de la Universidad de Pamplona.</p>
+  </footer>
+
+  <!-- Scripts: Bootstrap, Swiper, AOS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // Swiper hero animation
+    new Swiper('.swiper', {
+      loop: true,
+      effect: 'slide',
+      autoplay: { delay: 2600, disableOnInteraction: false },
+      pagination: { el: '.swiper-pagination', clickable: true },
+      speed: 900,
+    });
+    // AOS on scroll
+    AOS.init({ once: true, duration: 850, offset: 60 });
+  </script>
+</body>
+</html>
